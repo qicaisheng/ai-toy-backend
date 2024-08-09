@@ -15,17 +15,20 @@ from pydantic_core import MultiHostUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Self
 
-active_profile = os.environ.get('ACTIVE_PROFILE', 'local')
-dotenv_file: str
-if active_profile == 'dev':
-    dotenv_file = '.env.dev'
-elif active_profile == 'test':
-    dotenv_file = '.env.test'
-elif active_profile == 'prod':
-    dotenv_file = '.env.prod'
-else:
-    dotenv_file = '.env.local'
-print(f"""active profile: {active_profile}, {dotenv_file} is been selected""")
+
+def get_dotenv_file() -> str:
+    active_profile = os.environ.get('ACTIVE_PROFILE', 'local')
+    dotenv_file: str
+    if active_profile == 'dev':
+        dotenv_file = '.env.dev'
+    elif active_profile == 'test':
+        dotenv_file = '.env.test'
+    elif active_profile == 'prod':
+        dotenv_file = '.env.prod'
+    else:
+        dotenv_file = '.env.local'
+    print(f"""active profile: {active_profile}, {dotenv_file} is been selected""")
+    return dotenv_file
 
 
 def parse_cors(v: Any) -> list[str] | str:
@@ -38,7 +41,7 @@ def parse_cors(v: Any) -> list[str] | str:
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=dotenv_file, env_ignore_empty=True, extra="ignore"
+        env_file=get_dotenv_file(), env_ignore_empty=True, extra="ignore"
     )
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = secrets.token_urlsafe(32)
