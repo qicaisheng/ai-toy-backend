@@ -52,6 +52,7 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str = ""
+    POSTGRES_SCHEMA: str = "public"
     POSTGRES_DB: str = ""
 
     @computed_field  # type: ignore[prop-decorator]
@@ -64,6 +65,7 @@ class Settings(BaseSettings):
             host=self.POSTGRES_SERVER,
             port=self.POSTGRES_PORT,
             path=self.POSTGRES_DB,
+            query='options=-csearch_path%3D' + self.POSTGRES_SCHEMA
         )
 
     SMTP_TLS: bool = True
