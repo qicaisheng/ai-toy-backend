@@ -1,4 +1,4 @@
-# FastAPI Project - Backend
+# AI Toy Backend
 
 ## Requirements
 
