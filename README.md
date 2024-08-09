@@ -27,11 +27,21 @@ Make sure your editor is using the correct Python virtual environment.
 
 Modify or add SQLModel models for data and SQL tables in `./app/models.py`, API endpoints in `./app/api/`, CRUD (Create, Read, Update, Delete) utils in `./app/crud.py`.
 
+Add the .env.local file, and set Postgres config variable, after that, you can run just use `fastapi dev`. Then you can open the swagger doc page to login.
+
+But at first, there is no User, you can set init user via `python app/initial_data.py`.
+
 ### VS Code
 
 There are already configurations in place to run the backend through the VS Code debugger, so that you can use breakpoints, pause and explore variables, etc.
 
 The setup is also already configured so you can run the tests through the VS Code Python tests tab.
+
+### PyCharm
+
+There are multiple configurations need to set.
+- **Working direction setting**: If you find there are so many environment not set, you should set root path as working direction, you can set via "Settings > Project > Project Structure" and mark the root path as source. So you can get the correct .env file path.
+- **Pytest setting**: If you find there is no test found, you should set pytest as default test tool via "Settings > Tools > Python Integrated Tools" and modify default test runner.
 
 ### Backend tests
 
