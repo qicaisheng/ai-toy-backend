@@ -58,7 +58,7 @@ html = """
 """
 
 
-@router.get("/")
+@router.get("/page")
 async def list_conversations():
     return HTMLResponse(html)
 
