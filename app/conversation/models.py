@@ -32,3 +32,9 @@ class MessageBase(SQLModel):
     content: str
     parent_id: Optional[uuid.UUID]
 
+
+class UserMessageCreate(BaseModel):
+    conversation_id: Optional[uuid.UUID]
+    content: str
+    audio_id: Optional[str] = None
+    parent_id: Optional[uuid.UUID] = None

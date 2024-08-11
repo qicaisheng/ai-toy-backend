@@ -1,10 +1,12 @@
 import json
+from typing import Any
 
 from fastapi import APIRouter, WebSocket
 from fastapi.responses import HTMLResponse
 
-from app.conversation import conversation
-
+from app.api.deps import SessionDep, CurrentUser
+from app.conversation import conversation, service
+from app.conversation.models import UserMessageCreate, Message
 router = APIRouter()
 
 html = """
@@ -79,3 +81,8 @@ async def websocket_endpoint(websocket: WebSocket):
             print(output_text, end="")
             await websocket.send_json({"round": round, "output": output_text})
         print("")
+
+
+@router.post("/messages", response_model=Message)
+async def create_message(session: SessionDep, current_user: CurrentUser, user_message_create: UserMessageCreate) -> Any:
+    return service.create_user_message(session, current_user, user_message_create)

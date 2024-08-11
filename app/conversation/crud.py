@@ -3,7 +3,8 @@ from typing import Optional
 
 from sqlmodel import Session
 
-from app.conversation.models import Conversation, Message, Author
+from app.basic.models import User
+from app.conversation.models import Conversation, Message, Author, UserMessageCreate
 
 
 def create_conversation(*, session: Session, user_id: uuid.UUID) -> Conversation:
@@ -27,6 +28,24 @@ def create_message(*, session: Session, conversation_id: uuid.UUID, content: str
         author=author_dict,
         parent_id=parent_id,
         audio_id=audio_id
+    )
+    session.add(db_obj)
+    session.commit()
+    session.refresh(db_obj)
+    return db_obj
+
+
+def create_user_message(*, session: Session, user_message_create: UserMessageCreate, user: User) -> Message:
+    name = ""
+    if user.full_name is not None:
+        name = user.full_name
+    author_dict = dict(Author(role='user', name=name))
+    db_obj = Message(
+        conversation_id=user_message_create.conversation_id,
+        content=user_message_create.content,
+        author=author_dict,
+        parent_id=user_message_create.parent_id,
+        audio_id=user_message_create.audio_id
     )
     session.add(db_obj)
     session.commit()
