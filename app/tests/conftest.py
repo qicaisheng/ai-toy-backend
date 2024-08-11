@@ -4,6 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session, delete
 
+from app.conversation.models import Conversation
 from app.core.config import settings
 from app.core.db import engine, init_db
 from app.main import app
@@ -20,6 +21,8 @@ def db() -> Generator[Session, None, None]:
         statement = delete(Item)
         session.execute(statement)
         statement = delete(User)
+        session.execute(statement)
+        statement = delete(Conversation)
         session.execute(statement)
         session.commit()
 
