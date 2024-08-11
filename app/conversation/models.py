@@ -3,7 +3,6 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from pydantic import BaseModel
-from pydantic.v1 import root_validator
 from sqlmodel import SQLModel, Field, JSON, Column
 
 
@@ -26,15 +25,6 @@ class Message(SQLModel, table=True):
     author: dict = Field(sa_column=Column(JSON))
     parent_id: Optional[uuid.UUID] = Field(default=None)
     created_time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-    # @root_validator(pre=True)
-    # def convert_author(cls, values):
-    #     print('--------------')
-    #
-    #     if isinstance(values.get('author'), dict):
-    #         print('--------------')
-    #         values['author'] = Author(**values['author'])
-    #     return values
 
 
 class MessageBase(SQLModel):

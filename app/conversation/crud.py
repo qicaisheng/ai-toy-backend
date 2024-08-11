@@ -2,8 +2,8 @@ import uuid
 from typing import Optional
 
 from sqlmodel import Session
+
 from app.conversation.models import Conversation, Message, Author
-from pydantic import TypeAdapter
 
 
 def create_conversation(*, session: Session, user_id: uuid.UUID) -> Conversation:
