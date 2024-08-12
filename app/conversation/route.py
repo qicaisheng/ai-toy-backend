@@ -5,7 +5,7 @@ from fastapi import APIRouter, WebSocket
 from fastapi.responses import HTMLResponse
 
 from app.deps import SessionDep, CurrentUser
-from app.conversation import conversation, service
+from app.conversation import llm, service
 from app.conversation.models import UserMessageCreate, Message
 router = APIRouter()
 
@@ -74,7 +74,7 @@ async def websocket_endpoint(websocket: WebSocket):
         user_input = json.loads(request)['input']
         print(f"""User: {user_input}""")
 
-        stream_response = conversation.answer(user_input)
+        stream_response = llm.answer(user_input)
 
         print("Assistant: ", end="")
         for output_text in stream_response:
