@@ -14,7 +14,7 @@ from app.core.config import settings
 from app.core.security import get_password_hash, verify_password
 from app.basic.models import (
     Item,
-    Message,
+    NotifyMessage,
     UpdatePassword,
     User,
     UserCreate,
@@ -97,7 +97,7 @@ def update_user_me(
     return current_user
 
 
-@router.patch("/me/password", response_model=Message)
+@router.patch("/me/password", response_model=NotifyMessage)
 def update_password_me(
     *, session: SessionDep, body: UpdatePassword, current_user: CurrentUser
 ) -> Any:
@@ -114,7 +114,7 @@ def update_password_me(
     current_user.hashed_password = hashed_password
     session.add(current_user)
     session.commit()
-    return Message(message="Password updated successfully")
+    return NotifyMessage(message="Password updated successfully")
 
 
 @router.get("/me", response_model=UserPublic)
@@ -125,7 +125,7 @@ def read_user_me(current_user: CurrentUser) -> Any:
     return current_user
 
 
-@router.delete("/me", response_model=Message)
+@router.delete("/me", response_model=NotifyMessage)
 def delete_user_me(session: SessionDep, current_user: CurrentUser) -> Any:
     """
     Delete own user.
@@ -138,7 +138,7 @@ def delete_user_me(session: SessionDep, current_user: CurrentUser) -> Any:
     session.exec(statement)  # type: ignore
     session.delete(current_user)
     session.commit()
-    return Message(message="User deleted successfully")
+    return NotifyMessage(message="User deleted successfully")
 
 
 @router.post("/signup", response_model=UserPublic)
@@ -210,7 +210,7 @@ def update_user(
 @router.delete("/{user_id}", dependencies=[Depends(get_current_active_superuser)])
 def delete_user(
     session: SessionDep, current_user: CurrentUser, user_id: uuid.UUID
-) -> Message:
+) -> NotifyMessage:
     """
     Delete a user.
     """
@@ -225,4 +225,4 @@ def delete_user(
     session.exec(statement)  # type: ignore
     session.delete(user)
     session.commit()
-    return Message(message="User deleted successfully")
+    return NotifyMessage(message="User deleted successfully")

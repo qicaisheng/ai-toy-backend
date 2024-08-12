@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException
 from sqlmodel import func, select
 
 from app.deps import CurrentUser, SessionDep
-from app.basic.models import Item, ItemCreate, ItemPublic, ItemsPublic, ItemUpdate, Message
+from app.basic.models import Item, ItemCreate, ItemPublic, ItemsPublic, ItemUpdate, NotifyMessage
 
 router = APIRouter()
 
@@ -95,7 +95,7 @@ def update_item(
 @router.delete("/{id}")
 def delete_item(
     session: SessionDep, current_user: CurrentUser, id: uuid.UUID
-) -> Message:
+) -> NotifyMessage:
     """
     Delete an item.
     """
@@ -106,4 +106,4 @@ def delete_item(
         raise HTTPException(status_code=400, detail="Not enough permissions")
     session.delete(item)
     session.commit()
-    return Message(message="Item deleted successfully")
+    return NotifyMessage(message="Item deleted successfully")
