@@ -4,7 +4,7 @@ from typing import Any
 from fastapi import APIRouter, WebSocket
 from fastapi.responses import HTMLResponse
 
-from app.api.deps import SessionDep, CurrentUser
+from app.deps import SessionDep, CurrentUser
 from app.conversation import conversation, service
 from app.conversation.models import UserMessageCreate, Message
 router = APIRouter()
