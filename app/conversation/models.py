@@ -38,3 +38,10 @@ class UserMessageCreate(BaseModel):
     content: str
     audio_id: Optional[str] = None
     parent_id: Optional[uuid.UUID] = None
+
+
+class ConversationMessages(BaseModel):
+    conversation_id: uuid.UUID
+    user_id: uuid.UUID
+    created_time: datetime
+    messages: list[Message]

@@ -56,3 +56,7 @@ def create_user_message(*, session: Session, user_message_create: UserMessageCre
 def get_message(session, message_id: uuid.UUID) -> Message:
     message = session.get(Message, message_id)
     return message
+
+
+def get_messages_by_conversation_id(session, conversation_id: uuid.UUID) -> list[Message]:
+    return session.query(Message).filter(Message.conversation_id == conversation_id).all()

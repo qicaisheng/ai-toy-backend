@@ -1,4 +1,5 @@
 import json
+import uuid
 from typing import Any
 
 from fastapi import APIRouter, WebSocket
@@ -6,7 +7,8 @@ from fastapi.responses import HTMLResponse
 
 from app.deps import SessionDep, CurrentUser
 from app.conversation import llm, service
-from app.conversation.models import UserMessageCreate, Message
+from app.conversation.models import UserMessageCreate, Message, ConversationMessages
+
 router = APIRouter()
 
 html = """
@@ -86,3 +88,8 @@ async def websocket_endpoint(websocket: WebSocket):
 @router.post("/messages", response_model=Message)
 async def create_message(session: SessionDep, current_user: CurrentUser, user_message_create: UserMessageCreate) -> Any:
     return service.create_user_message(session, current_user, user_message_create)
+
+
+@router.get("/{conversation_id}/messages", response_model=ConversationMessages)
+async def list_messages(session: SessionDep, current_user: CurrentUser, conversation_id: uuid.UUID) -> Any:
+    return service.list_messages(session, current_user=current_user, conversation_id=conversation_id)
